@@ -13,9 +13,19 @@ app.use(express.static("public"));
 //this helps validate passing right data back and forth
 app.use(express.urlencoded({ extended: true })); //if we set this to false it wouldn't let us send a json object with an array
 
-//URI is the connection string
+/* I did lots of things here. Mongoose callback here was deprecated so, I got the promise coming from db and the only way I could log was connect - then - catch - async try catch can be used as well
 
-// I did lots of things here. Mongoose callback here was deprecated so, I got the promise coming from db and the only way I could log was connect - then - catch
+async function connect() {
+  try {
+    mongoose.connect(url);
+    console.log("connected to dbase");
+  } catch (error) {
+    console.log(error);
+  }
+} 
+connect()
+*/
+
 mongoose
   .connect(process.env.DB_CONNECTION, {
     useNewUrlParser: true,
