@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 const PORT = 8000;
 const mongoose = require("mongoose");
-const todotask = require("./models/todotask");
+const TodoTask = require("./models/todotask");
 require("dotenv").config();
 
 //set middleware to use ejs
@@ -26,6 +26,7 @@ async function connect() {
 connect()
 */
 
+//Connect to Mongoose
 mongoose
   .connect(process.env.DB_CONNECTION, {
     useNewUrlParser: true,
@@ -33,20 +34,53 @@ mongoose
   })
   .then(() => {
     console.log("Connected to dbase");
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
   })
   .catch((err) => {
     console.error(err);
   });
 
+// GET METHOD
 app.get("/", async (req, res) => {
   try {
-    todotask.find({}, (err, tasks) => {
-      res.render("index.ejs", { todoTasks: task });
+    await TodoTask.find({}, (err, tasks) => {
+      res.render("index.ejs", { todoTasks: tasks });
     });
-  } catch (err) {}
+  } catch (err) {
+    if (err) return res.status(500).send(err);
+  }
+});
+
+//using await directly is a better approach
+
+/* app.get("/", async (req, res) => {
+  try {
+    const tasks = await TodoTask.find({});
+    res.render("index.ejs", { todoTasks: tasks });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error retrieving tasks");
+  }
+}); */
+
+/* //POST METHOD
+app.post("/", async (req, res) => {
+  const todoTask = new TodoTask({
+    title: req.body.title,
+    content: req.body.content,
+  });
+  try {
+    await todoTask.save();
+    console.log(todoTask);
+    res.redirect("/");
+  } catch (err) {
+    if (err) return res.status(500).send(err);
+    res.redirect("/");
+  }
+}); */
+
+//Start Server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 Is this working?
