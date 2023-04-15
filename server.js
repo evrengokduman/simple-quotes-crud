@@ -40,7 +40,7 @@ mongoose
   });
 
 // GET METHOD
-app.get("/", async (req, res) => {
+/* app.get("/", async (req, res) => {
   try {
     await TodoTask.find({}, (err, tasks) => {
       res.render("index.ejs", { todoTasks: tasks });
@@ -48,11 +48,11 @@ app.get("/", async (req, res) => {
   } catch (err) {
     if (err) return res.status(500).send(err);
   }
-});
+}); */
 
 //using await directly is a better approach
 
-/* app.get("/", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
     const tasks = await TodoTask.find({});
     res.render("index.ejs", { todoTasks: tasks });
@@ -60,7 +60,7 @@ app.get("/", async (req, res) => {
     console.log(err);
     res.status(500).send("Error retrieving tasks");
   }
-}); */
+});
 
 /* //POST METHOD
 app.post("/", async (req, res) => {
